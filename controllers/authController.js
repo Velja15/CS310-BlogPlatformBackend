@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-// Pomoćna funkcija za generisanje JWT tokena.
 const generateToken = (user) =>
   jwt.sign(
     { id: user.id, role: user.role, username: user.username },
@@ -10,8 +9,6 @@ const generateToken = (user) =>
     { expiresIn: "7d" }
   );
 
-// POST /auth/register — registracija novog korisnika.
-// Lozinka se hešuje pomoću bcrypt-a pre upisa u bazu.
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -38,8 +35,6 @@ export const register = async (req, res) => {
   }
 };
 
-// POST /auth/login — prijava korisnika.
-// Lozinka se poredi sa heširanom vrednošću iz baze pomoću bcrypt.compare.
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -61,7 +56,6 @@ export const login = async (req, res) => {
   }
 };
 
-// GET /auth/me — vraća podatke trenutno prijavljenog korisnika (na osnovu tokena).
 export const me = async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) return res.status(404).json({ message: "Korisnik nije pronađen" });

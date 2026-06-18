@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Entitet 2: Post (blog objava)
 const postSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true, minlength: 5 },
@@ -9,7 +8,6 @@ const postSchema = new mongoose.Schema(
     authorId: { type: String, required: true },
     authorName: { type: String, required: true },
     imageUrl: { type: String, default: "" },
-    // Posebna funkcionalnost: lajkovi (niz ID-jeva korisnika koji su lajkovali).
     likes: { type: [String], default: [] },
   },
   { timestamps: true }

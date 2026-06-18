@@ -4,7 +4,6 @@ import { protect, adminOnly } from "../middleware/auth.js";
 
 const router = Router();
 
-// Sve korisničke rute su dostupne samo administratoru.
 router.get("/", protect, adminOnly, getUsers);
 router.delete("/:id", protect, adminOnly, deleteUser);
 

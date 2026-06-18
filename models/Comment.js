@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Entitet 3: Komentar
 const commentSchema = new mongoose.Schema(
   {
     postId: { type: String, required: true },

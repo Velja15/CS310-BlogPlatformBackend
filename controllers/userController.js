@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 
-// GET /users — lista svih korisnika (samo administrator).
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: 1 });
@@ -12,8 +11,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// DELETE /users/:id — brisanje korisnika (samo administrator).
-// Administrator ne može obrisati sopstveni nalog.
+
 export const deleteUser = async (req, res) => {
   try {
     if (req.params.id === req.user.id) {

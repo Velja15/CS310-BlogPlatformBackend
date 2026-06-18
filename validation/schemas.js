@@ -1,8 +1,5 @@
 import Joi from "joi";
 
-// JOI šeme za validaciju ulaznih podataka na backendu.
-// Ova biblioteka pokriva i zahtev "validacija na backendu" i zahtev
-// "eksterna biblioteka koja nije rađena na času".
 
 export const registerSchema = Joi.object({
   username: Joi.string().min(3).max(30).required().messages({
@@ -17,7 +14,6 @@ export const registerSchema = Joi.object({
     "string.min": "Lozinka mora imati najmanje 6 karaktera",
     "any.required": "Lozinka je obavezna",
   }),
-  // confirmPassword se šalje sa frontenda, dozvoljavamo ga ali ne čuvamo.
   confirmPassword: Joi.any().optional(),
   role: Joi.any().optional(),
 });
@@ -48,8 +44,7 @@ export const postSchema = Joi.object({
       "any.only": "Neispravna kategorija",
       "any.required": "Kategorija je obavezna",
     }),
-  // Polja koja frontend dodatno šalje — ignorišu se, autor i slika se
-  // postavljaju na serveru, pa ih samo dozvoljavamo da prođu validaciju.
+
   imageUrl: Joi.string().allow("").optional(),
   authorId: Joi.any().optional(),
   authorName: Joi.any().optional(),

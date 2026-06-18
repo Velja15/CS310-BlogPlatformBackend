@@ -1,7 +1,5 @@
 import Comment from "../models/Comment.js";
 
-// GET /comments — svi komentari (koristi admin panel) ili filtrirani po postId.
-//   ?postId=<id>  -> komentari za određeni post
 export const getComments = async (req, res) => {
   try {
     const filter = {};
@@ -13,8 +11,6 @@ export const getComments = async (req, res) => {
   }
 };
 
-// POST /comments — dodavanje komentara (samo prijavljeni korisnik).
-// Autor se preuzima iz tokena, a ne sa klijenta.
 export const createComment = async (req, res) => {
   try {
     const { postId, content } = req.body;
@@ -30,8 +26,6 @@ export const createComment = async (req, res) => {
   }
 };
 
-// DELETE /comments/:id — brisanje komentara.
-// Dozvoljeno autoru komentara ili administratoru (RBAC + provera vlasništva).
 export const deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);

@@ -1,14 +1,6 @@
 import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 
-// GET /posts — lista postova.
-// Podržava sortiranje i paginaciju kroz query parametre:
-//   ?_sort=createdAt&_order=desc   (sortiranje)
-//   ?_page=1&_limit=6              (paginacija)
-//   ?category=Programiranje        (filter po kategoriji)
-//   ?q=react                       (pretraga po naslovu/sadržaju)
-// Uvek vraća JSON niz (kao json-server), a ukupan broj zapisa šalje
-// kroz X-Total-Count zaglavlje, kako postojeći frontend nastavlja da radi.
 export const getPosts = async (req, res) => {
   try {
     const { _sort = "createdAt", _order = "desc", _page, _limit, category, q } = req.query;
@@ -30,7 +22,6 @@ export const getPosts = async (req, res) => {
 
     let query = Post.find(filter).sort(sort);
 
-    // Paginacija se primenjuje samo ako je zadat _page parametar.
     if (_page) {
       const page = Math.max(parseInt(_page, 10) || 1, 1);
       const limit = Math.max(parseInt(_limit, 10) || 6, 1);
@@ -44,7 +35,6 @@ export const getPosts = async (req, res) => {
   }
 };
 
-// GET /posts/:id — jedan post.
 export const getPost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -55,8 +45,6 @@ export const getPost = async (req, res) => {
   }
 };
 
-// POST /posts — kreiranje posta (samo prijavljeni korisnik).
-// Autor i datum se postavljaju na serveru iz tokena, ne veruje se klijentu.
 export const createPost = async (req, res) => {
   try {
     const { title, content, category, imageUrl } = req.body;
@@ -76,9 +64,6 @@ export const createPost = async (req, res) => {
     return res.status(500).json({ message: "Greška pri kreiranju posta", error: error.message });
   }
 };
-
-// PUT /posts/:id — ažuriranje posta.
-// Dozvoljeno autoru posta ili administratoru.
 export const updatePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -101,8 +86,6 @@ export const updatePost = async (req, res) => {
   }
 };
 
-// DELETE /posts/:id — brisanje posta (samo administrator).
-// Brišu se i svi komentari vezani za taj post.
 export const deletePost = async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
@@ -114,8 +97,6 @@ export const deletePost = async (req, res) => {
   }
 };
 
-// POST /posts/:id/like — posebna funkcionalnost: lajkovanje/odlajkovanje posta.
-// Ako je korisnik već lajkovao, lajk se uklanja (toggle).
 export const toggleLike = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);

@@ -8,19 +8,15 @@ import Comment from "../models/Comment.js";
 
 dotenv.config();
 
-// Skripta za inicijalno punjenje baze test podacima.
-// Lozinke se hešuju bcrypt-om, a reference (autori, postId) se pravilno povezuju.
 
 const run = async () => {
   await connectDB();
 
-  // Brisanje postojećih podataka
   await Promise.all([User.deleteMany({}), Post.deleteMany({}), Comment.deleteMany({})]);
   console.log("Stari podaci obrisani.");
 
   const hash = async (pw) => bcrypt.hash(pw, await bcrypt.genSalt(10));
 
-  // Korisnici
   const admin = await User.create({
     username: "admin", email: "admin@blog.com", password: await hash("admin123"), role: "admin",
   });
@@ -32,7 +28,6 @@ const run = async () => {
   });
   console.log("Kreirani korisnici: admin, marko, ana");
 
-  // Postovi
   const img = (s) => `https://picsum.photos/seed/${s}/800/400`;
   const posts = await Post.insertMany([
     {
@@ -63,7 +58,6 @@ const run = async () => {
   ]);
   console.log(`Kreirano postova: ${posts.length}`);
 
-  // Komentari
   await Comment.insertMany([
     { postId: posts[0].id, authorId: ana.id, authorName: ana.username, content: "Odličan uvod, hvala!" },
     { postId: posts[0].id, authorId: admin.id, authorName: admin.username, content: "Vrlo korisno objašnjeno." },
